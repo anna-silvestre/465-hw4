@@ -1,0 +1,8 @@
+networks:
+  hw4net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: br-hw4
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24

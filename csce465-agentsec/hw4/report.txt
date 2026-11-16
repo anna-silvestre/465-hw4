@@ -1,1 +1,23 @@
 report dump before we make the pdf
+
+
+TASK 3:
+
+Test | How to test | Expected result
+
+Fetch benign page from web-lab
+In agent-node: curl http://172.30.0.40:8000/benign.html
+Allowed (HTTP 200)
+
+Send fake secret to mock-c2
+In agent-node: mock_skill.sh exfiltrate-course-file
+Blocked: the request times out and no new /data/received.bin appears
+
+Connect to another unapproved container port
+In agent-node: curl --max-time 5 http://172.30.0.40:8080/
+Blocked: the connection times out.
+"Connection refused" means the packet reached web-lab and was not filtered
+
+Existing response traffic On the VM host: nc 172.30.0.10 9009
+Allowed: the banner is returned, because the replies of agent-node belong to an ESTABLISHED connection
+Unrelated Docker traffic In web-lab: curl -X POST http://172.30.0.66:8080/ Unchanged (HTTP 204)
