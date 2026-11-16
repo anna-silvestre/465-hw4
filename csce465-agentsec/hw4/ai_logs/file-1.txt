@@ -1,0 +1,116 @@
+PROMPT:
+
+how do I go about creating this topology with docker compose?
+
+agent-node 172.30.0.10
+web-lab 172.30.0.40:8000
+mock-c2 172.30.0.66:8080
+network 172.30.0.0/24
+
+
+RESPONSE:
+
+You'll want to create a custom Docker bridge network with the subnet 172.30.0.0/24, then assign each container a static IP address using Docker Compose.
+
+You can do all of this in a single docker-compose.yml file.
+1. Create your docker-compose.yml
+Navigate to the directory where you want your project and create the file:
+nano docker-compose.yml
+
+
+Put this in it:
+services:
+  agent-node:
+    image: ubuntu:latest
+    container_name: agent-node
+    networks:
+      lab-network:
+        ipv4_address: 172.30.0.10
+    command: sleep infinity
+
+  web-lab:
+    image: python:3.12-slim
+    container_name: web-lab
+    ports:
+      - "8000:8000"
+    networks:
+      lab-network:
+        ipv4_address: 172.30.0.40
+    command: python -m http.server 8000 --bind 0.0.0.0
+
+  mock-c2:
+    image: python:3.12-slim
+    container_name: mock-c2
+    ports:
+      - "8080:8080"
+    networks:
+      lab-network:
+        ipv4_address: 172.30.0.66
+    command: python -m http.server 8080 --bind 0.0.0.0
+
+networks:
+  lab-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+          gateway: 172.30.0.1
+
+
+What this does:
+- Creates a Docker bridge network called lab-network.
+- Assigns the three containers their specified static IP addresses.
+- Exposes web-lab on port 8000.
+- Exposes mock-c2 on port 8080.
+- Keeps agent-node running so you can interact with it.
+Note: These are placeholder services to establish the topology. You can replace the images and commands with the actual applications required by your assignment.
+2. Start the topology
+Run:
+docker compose up -d
+
+
+Check that everything started:
+docker compose ps
+
+
+3. Verify the IP addresses
+Run:
+docker network inspect hw4_lab-network
+
+
+Alternatively, check each container individually:
+docker inspect agent-node
+docker inspect web-lab
+docker inspect mock-c2
+
+
+You should see:
+Container	IP address
+agent-node	172.30.0.10
+web-lab	172.30.0.40
+mock-c2	172.30.0.66
+
+4. Test connectivity
+Get a shell inside agent-node:
+docker exec -it agent-node bash
+
+
+From inside the container, test:
+ping -c 3 172.30.0.40
+ping -c 3 172.30.0.66
+
+
+Test the web services:
+curl http://172.30.0.40:8000
+curl http://172.30.0.66:8080
+
+
+You should get Python HTTP server responses.
+5. Useful commands
+Command	Purpose
+docker compose up -d	Start topology
+docker compose down	Stop and remove containers/network
+docker compose ps	Check running containers
+docker compose logs	View container logs
+docker compose restart	Restart services
+docker network ls	List Docker networks

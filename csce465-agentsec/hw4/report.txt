@@ -1,5 +1,12 @@
 report dump before we make the pdf
 
+TASK 1: 
+
+ASDFGHJKL
+
+TASK 2:
+
+ASDFGHJJ
 
 TASK 3:
 
@@ -21,3 +28,11 @@ Blocked: the connection times out.
 Existing response traffic On the VM host: nc 172.30.0.10 9009
 Allowed: the banner is returned, because the replies of agent-node belong to an ESTABLISHED connection
 Unrelated Docker traffic In web-lab: curl -X POST http://172.30.0.66:8080/ Unchanged (HTTP 204)
+
+TASK 4:
+
+ASDFGHJKL
+
+TASK 5:
+
+ASDFGHJ

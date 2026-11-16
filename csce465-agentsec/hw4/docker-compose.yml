@@ -1,8 +1,42 @@
-networks:
-  hw4net:
-    driver: bridge
-    driver_opts:
-      com.docker.network.bridge.name: br-hw4
-    ipam:
-      config:
-        - subnet: 172.30.0.0/24
+# agent-node 172.30.0.10
+# web-lab 172.30.0.40:8000
+# mock-c2 172.30.0.66:8080
+# network 172.30.0.0/24
+
+services:
+  agent-node:
+    image: ubuntu:latest
+    container_name: agent-node
+    networks:
+      hw4net:
+        ipv4_address: 172.30.0.10
+    command: sleep infinity
+
+  web-lab:
+    image: python:3.12-slim
+    container_name: web-lab
+    ports:
+      - "8000:8000"
+    networks:
+      hw4net:
+        ipv4_address: 172.30.0.40
+    command: python -m http.server 8000 --bind 0.0.0.0
+
+  mock-c2:
+    image: python:3.12-slim
+    container_name: mock-c2
+    ports:
+      - "8080:8080"
+    networks:
+      hw4net:
+        ipv4_address: 172.30.0.66
+    command: python -m http.server 8080 --bind 0.0.0.0
+
+  networks:
+    hw4net:
+      driver: bridge
+      driver_opts:
+        com.docker.network.bridge.name: br-hw4
+      ipam:
+        config:
+          - subnet: 172.30.0.0/24
