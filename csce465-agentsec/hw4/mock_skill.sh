@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # mock_skill.sh, run inside agent-node, which:
 # – starts a harmless listener on TCP 9009 inside agent-node using socat (for example, one that
 # only prints a banner);
