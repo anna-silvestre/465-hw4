@@ -8,8 +8,77 @@ agent-node   hw4-lab:local   "sleep infinity"         agent-node   29 seconds ag
 mock-c2      hw4-lab:local   "python /app/c2.py"      mock-c2      27 seconds ago   Up 11 seconds   0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
 web-lab      hw4-lab:local   "python -m http.serv…"   web-lab      29 seconds ago   Up 13 seconds   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
 
-
-
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ docker network inspect hw4_hw4net
+[
+    {
+        "Name": "hw4_hw4net",
+        "Id": "e7ba85e049984cecdffa063fdd839060acdd222762a3bd2af0f671f86726e3c5",
+        "Created": "2026-11-19T18:56:07.633296851-05:00",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.30.0.0/24",
+                    "Gateway": "172.30.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {
+            "com.docker.network.bridge.name": "br-hw4"
+        },
+        "Labels": {
+            "com.docker.compose.config-hash": "e580e00a8df4afa6daed1a5508d627bc60f2e78f7238f1a029114a04b5c41e3f",
+            "com.docker.compose.network": "hw4net",
+            "com.docker.compose.project": "hw4",
+            "com.docker.compose.version": "5.8.0"
+        },
+        "Containers": {
+            "7dc527a8e0ab6fa14a331d0f913b2c6a509a207c4f69b6dc8d1efcb5a9f384fb": {
+                "Name": "mock-c2",
+                "EndpointID": "460e552766cf9be2d94f20bf5e33a3d259354e119cac088cb1cc929c8affeed7",
+                "MacAddress": "1e:cc:e8:77:13:83",
+                "IPv4Address": "172.30.0.66/24",
+                "IPv6Address": ""
+            },
+            "946b84cdcba0a355e504bafafa4979d57bb04224fea32ebf4beb16d6c2897202": {
+                "Name": "agent-node",
+                "EndpointID": "8cee1d75b7ba4ccf5c834e4f5650abd35d85d2c2aeb73af22f6a0508d2f37c19",
+                "MacAddress": "f6:ca:f1:4d:eb:81",
+                "IPv4Address": "172.30.0.10/24",
+                "IPv6Address": ""
+            },
+            "ba0c2b15a023ef1b294a2898748161ddb56f8747824e1af86b9425f61780617c": {
+                "Name": "web-lab",
+                "EndpointID": "2aac56800d0a163395c8e7670d9433f6bcd8b3d3b9ee480715642493516b4dc2",
+                "MacAddress": "4a:ed:8b:9b:a5:3d",
+                "IPv4Address": "172.30.0.40/24",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.30.0.0/24": {
+                        "IPsInUse": 6,
+                        "DynamicIPsAvailable": 250
+                    }
+                }
+            }
+        }
+    }
+]
 
 ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ docker compose exec agent-node /app/mock_skill.sh exfiltrate-course-file
 [mock-skill] Sending fake secret to mock-c2...
