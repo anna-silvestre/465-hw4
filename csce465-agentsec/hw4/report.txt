@@ -2,11 +2,24 @@ report dump before we make the pdf
 
 TASK 1: 
 
-ASDFGHJKL
+(1) Provide the output of docker compose ps and of docker network inspect for your lab network, showing
+the subnet and the three fixed IP addresses. (2) Before adding any firewall, run the mock skill with the exact
+trigger and show that mock-c2 received the file: compare the SHA-256 of /data/received.bin with that of
+fake_secrets.txt. (3) In your own words, explain what each container represents in the incident.
+
+anna_s@anna-465:~/465-hw4/csce465-agentsec/hw4$ sudo docker compose ps
+NAME         IMAGE                        COMMAND                  SERVICE      CREATED          STATUS          PORTS
+agent-node   ubuntu:latest                "sleep infinity"         agent-node   45 seconds ago   Up 34 seconds   
+mock-c2      python:3.12.16-slim-trixie   "python -m http.serv…"   mock-c2      2 hours ago      Up 2 hours      0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
+web-lab      python:3.12.16-slim-trixie   "python -m http.serv…"   web-lab      2 hours ago      Up 2 hours      0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+
 
 TASK 2:
 
-ASDFGHJJ
+(1) Provide the scan output. (2) Present the reconstruction items above in a table, together with the
+TShark commands you used to obtain each one. (3) In your own words, describe the sequence of events
+that the capture shows, and explain what evidence shows that the listener on TCP 9009 is a separate,
+unauthorized service rather than part of web-lab or mock-c2.
 
 TASK 3:
 
@@ -29,10 +42,21 @@ Existing response traffic On the VM host: nc 172.30.0.10 9009
 Allowed: the banner is returned, because the replies of agent-node belong to an ESTABLISHED connection
 Unrelated Docker traffic In web-lab: curl -X POST http://172.30.0.66:8080/ Unchanged (HTTP 204)
 
+(1) Explain how you designed firewall.sh, rule by rule, and how it maps to the five policy
+requirements above. (2) Provide the results of all five verification tests, together with the packet counters
+and kernel log lines. (3) In your own words, explain why default-deny egress with stateful filtering stops the
+exfiltration while still allowing the benign fetch and the reply traffic, and why a firewall tested only against
+traffic leaving the lab network could look correct while the exfiltration to mock-c2 still succeeds
+
 TASK 4:
 
-ASDFGHJKL
+(1) Provide your three rules and explain what each keyword does. (2) Provide the alerts (fast.log) for
+both captures and a table with your TP/FP/FN/TN result for each rule and PCAP. (3) In your own words,
+explain what limitation you may have.
 
 TASK 5:
 
-ASDFGHJ
+Include the incident summary as its own section of your report, at most one page long. Use the
+timestamps from your Task 2 capture and the alerts from Task 4.
+
+CONTRIBUTION STATEMENT:

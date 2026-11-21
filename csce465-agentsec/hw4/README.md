@@ -31,3 +31,6 @@ logout
 TASK 1:
 
 printf 'CSCE465-FAKE-TOKEN-%s' "$(openssl rand -hex 8)" > fake_secrets.txt;
+
+sudo docker compose up -d --build
+sudo docker compose ps

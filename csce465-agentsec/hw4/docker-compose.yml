@@ -5,15 +5,20 @@
 
 services:
   agent-node:
+    build: .
     image: ubuntu:latest
     container_name: agent-node
+    working_dir: /app
+    volumes:
+      - .:/app
     networks:
       hw4net:
         ipv4_address: 172.30.0.10
     command: sleep infinity
 
   web-lab:
-    image: python:3.12-slim
+    build: .
+    image: python:3.12.16-slim-trixie
     container_name: web-lab
     ports:
       - "8000:8000"
@@ -23,7 +28,8 @@ services:
     command: python -m http.server 8000 --bind 0.0.0.0
 
   mock-c2:
-    image: python:3.12-slim
+    build: .
+    image: python:3.12.16-slim-trixie
     container_name: mock-c2
     ports:
       - "8080:8080"
@@ -32,11 +38,11 @@ services:
         ipv4_address: 172.30.0.66
     command: python -m http.server 8080 --bind 0.0.0.0
 
-  networks:
-    hw4net:
-      driver: bridge
-      driver_opts:
-        com.docker.network.bridge.name: br-hw4
-      ipam:
-        config:
-          - subnet: 172.30.0.0/24
+networks:
+  hw4net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: br-hw4
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
