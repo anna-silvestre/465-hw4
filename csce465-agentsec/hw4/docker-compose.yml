@@ -6,7 +6,7 @@
 services:
   agent-node:
     build: .
-    image: ubuntu:latest
+    image: hw4-lab:local
     container_name: agent-node
     working_dir: /app
     volumes:
@@ -18,25 +18,27 @@ services:
 
   web-lab:
     build: .
-    image: python:3.12.16-slim-trixie
+    image: hw4-lab:local
     container_name: web-lab
     ports:
       - "8000:8000"
     networks:
       hw4net:
         ipv4_address: 172.30.0.40
-    command: python -m http.server 8000 --bind 0.0.0.0
+    command: python -m http.server 8000 --bind 0.0.0.0 --directory /app/web
 
   mock-c2:
     build: .
-    image: python:3.12.16-slim-trixie
+    image: hw4-lab:local
     container_name: mock-c2
     ports:
       - "8080:8080"
     networks:
       hw4net:
         ipv4_address: 172.30.0.66
-    command: python -m http.server 8080 --bind 0.0.0.0
+    volumes:
+      - c2-data:/data
+    command: python /app/c2.py
 
 networks:
   hw4net:
@@ -46,3 +48,6 @@ networks:
     ipam:
       config:
         - subnet: 172.30.0.0/24
+
+volumes:
+  c2-data:

