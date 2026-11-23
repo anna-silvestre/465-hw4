@@ -34,3 +34,11 @@ printf 'CSCE465-FAKE-TOKEN-%s' "$(openssl rand -hex 8)" > fake_secrets.txt;
 
 sudo docker compose up -d --build
 sudo docker compose ps
+
+TASK 3:
+
+fetch benign webpage: sudo docker compose exec agent-node curl http://172.30.0.40:8000/benign.html
+exfiltrate: sudo docker compose exec agent-node ./mock_skill.sh exfiltrate-course-file
+unapproved container port: sudo docker compose exec agent-node curl --max-time 5 http://172.30.0.40:8080/
+existing response traffic: nc -v 172.30.0.10 9009
+unrelated: sudo docker compose exec web-lab curl -X POST http://172.30.0.66:8080/ 

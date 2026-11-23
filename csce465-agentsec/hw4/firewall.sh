@@ -2,15 +2,23 @@
 modprobe br_netfilter
 sysctl -w net.bridge.bridge-nf-call-iptables=1
 
-# estblished and related connections are allowed
-iptables -A DOCKER-USER -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+# custom chain for clean separation of HW4 policy
+iptables -N HW4-POLICY 2>/dev/null || iptables -F HW4-POLICY
 
-# allow agent-node to talk to web-lab on TCP 8000
-iptables -A DOCKER-USER -s 172.30.0.10 -d 172.30.0.40 -p tcp --dport 8000 -j ACCEPT
+# insert the custom chain into the DOCKER-USER chain if not already present
+iptables -C HW4-POLICY -j HW4-POLICY 2>/dev/null || iptables -I DOCKER-USER 1 -j HW4-POLICY
 
-# monitor and do not permit agent-node to talk to mock-c2 on TCP 8080
-iptables -A DOCKER-USER -s 172.30.0.10 -d 172.30.0.66 -p tcp --dport 8080 -j conntrack --ctstate NEW -j LOG --log-prefix "HW4-C2-DROP: "
-iptables -A DOCKER-USER -s 172.30.0.10 -d 172.30.0.66 -p tcp --dport 8080 -j DROP
+# allow established and related return traffic
+iptables -A HW4-POLICY -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-# default-deny all other traffic to agent-node
-iptables -A DOCKER-USER -d 172.30.0.10 -j DROP
+# allow agent-node to reach web-lab on TCP 8000
+iptables -A HW4-POLICY -s 172.30.0.10 -d 172.30.0.40 -p tcp --dport 8000 -j ACCEPT
+
+# log and drop new connections from agent-node to mock-c2 on TCP 8080
+iptables -A HW4-POLICY -s 172.30.0.10 -d 172.30.0.66 -p tcp --dport 8080 -m state --state NEW -j LOG --log-prefix "HW4-C2-DROP: "
+iptables -A HW4-POLICY -s 172.30.0.10 -d 172.30.0.66 -p tcp --dport 8080 -m state --state NEW -j DROP
+
+# drop other new forwarded connections from agent-node
+iptables -A HW4-POLICY -s 172.30.0.10 -j DROP
+
+# leave unrelated Docker traffic unchanged
