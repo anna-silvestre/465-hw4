@@ -1,19 +1,19 @@
-[112378 - Suricata-Main] 2026-11-23 03:30:49 Notice: suricata: This is Suricata version 8.0.8 RELEASE running in USER mode
-[112378 - Suricata-Main] 2026-11-23 03:30:49 Info: cpu: CPUs/cores online: 8
-[112378 - Suricata-Main] 2026-11-23 03:30:49 Info: suricata: Setting engine mode to IDS mode by default
-[112378 - Suricata-Main] 2026-11-23 03:30:49 Info: exception-policy: master exception-policy set to: auto
-[112378 - Suricata-Main] 2026-11-23 03:30:49 Info: suricata: Preparing unexpected signal handling
-[112378 - Suricata-Main] 2026-11-23 03:30:49 Info: logopenfile: fast output device (regular) initialized: fast.log
-[112378 - Suricata-Main] 2026-11-23 03:30:49 Info: logopenfile: eve-log output device (regular) initialized: eve.json
-[112378 - Suricata-Main] 2026-11-23 03:30:49 Info: logopenfile: stats output device (regular) initialized: stats.log
-[112378 - Suricata-Main] 2026-11-23 03:30:49 Info: detect: 1 rule files processed. 3 rules successfully loaded, 0 rules failed, 0 rules skipped
-[112378 - Suricata-Main] 2026-11-23 03:30:49 Info: threshold-config: Threshold config parsed: 0 rule(s) found
-[112378 - Suricata-Main] 2026-11-23 03:30:49 Info: detect: 3 signatures processed. 0 are IP-only rules, 0 are inspecting packet payload, 2 inspect application layer, 0 are decoder event only
-[112378 - Suricata-Main] 2026-11-23 03:30:49 Warning: detect: rule 1000003: SYN-only to port(s) 8080:8080 w/o direction specified, disabling for toclient direction
-[112388 - RX#01] 2026-11-23 03:30:49 Info: pcap: Starting file run for hw4-malicious.pcap
-[112378 - Suricata-Main] 2026-11-23 03:30:49 Notice: threads: Threads created -> RX: 1 W: 8 FM: 1 FR: 1   Engine started.
-[112388 - RX#01] 2026-11-23 03:30:49 Info: pcap: pcap file hw4-malicious.pcap end of file reached (pcap err code 0)
-[112378 - Suricata-Main] 2026-11-23 03:30:50 Notice: suricata: Signal Received.  Stopping engine.
-[112378 - Suricata-Main] 2026-11-23 03:30:50 Info: suricata: time elapsed 0.102s
-[112388 - RX#01] 2026-11-23 03:30:50 Notice: pcap: read 1 file, 26 packets, 2530 bytes
-[112378 - Suricata-Main] 2026-11-23 03:30:50 Info: counters: Alerts: 2
+[116449 - Suricata-Main] 2026-11-23 04:34:39 Notice: suricata: This is Suricata version 8.0.8 RELEASE running in USER mode
+[116449 - Suricata-Main] 2026-11-23 04:34:39 Info: cpu: CPUs/cores online: 8
+[116449 - Suricata-Main] 2026-11-23 04:34:39 Info: suricata: Setting engine mode to IDS mode by default
+[116449 - Suricata-Main] 2026-11-23 04:34:39 Info: exception-policy: master exception-policy set to: auto
+[116449 - Suricata-Main] 2026-11-23 04:34:39 Info: suricata: Preparing unexpected signal handling
+[116449 - Suricata-Main] 2026-11-23 04:34:39 Info: logopenfile: fast output device (regular) initialized: fast.log
+[116449 - Suricata-Main] 2026-11-23 04:34:39 Info: logopenfile: eve-log output device (regular) initialized: eve.json
+[116449 - Suricata-Main] 2026-11-23 04:34:39 Info: logopenfile: stats output device (regular) initialized: stats.log
+[116449 - Suricata-Main] 2026-11-23 04:34:39 Info: detect: 1 rule files processed. 3 rules successfully loaded, 0 rules failed, 0 rules skipped
+[116449 - Suricata-Main] 2026-11-23 04:34:39 Info: threshold-config: Threshold config parsed: 0 rule(s) found
+[116449 - Suricata-Main] 2026-11-23 04:34:39 Info: detect: 3 signatures processed. 0 are IP-only rules, 1 are inspecting packet payload, 1 inspect application layer, 0 are decoder event only
+[116449 - Suricata-Main] 2026-11-23 04:34:39 Warning: detect: rule 1000003: SYN-only to port(s) 8080:8080 w/o direction specified, disabling for toclient direction
+[116465 - RX#01] 2026-11-23 04:34:39 Info: pcap: Starting file run for hw4-malicious.pcap
+[116465 - RX#01] 2026-11-23 04:34:39 Info: pcap: pcap file hw4-malicious.pcap end of file reached (pcap err code 0)
+[116449 - Suricata-Main] 2026-11-23 04:34:39 Notice: threads: Threads created -> RX: 1 W: 8 FM: 1 FR: 1   Engine started.
+[116449 - Suricata-Main] 2026-11-23 04:34:39 Notice: suricata: Signal Received.  Stopping engine.
+[116449 - Suricata-Main] 2026-11-23 04:34:39 Info: suricata: time elapsed 0.169s
+[116465 - RX#01] 2026-11-23 04:34:39 Notice: pcap: read 1 file, 26 packets, 2530 bytes
+[116449 - Suricata-Main] 2026-11-23 04:34:39 Info: counters: Alerts: 3
