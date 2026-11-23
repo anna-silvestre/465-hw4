@@ -94,17 +94,11 @@ ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ docker compose exec mock-c2 sh
 
 TASK 2:
 
-tshark -r hw4-malicious.pcap -Y http -T fields -e frame.number -e ip.src -e tcp.srcport -e ip.dst -e tcp.dstport -e http.request.method -e http.request.uri
-4	172.30.0.1	49876	172.30.0.40	8000	GET	/adversarial.html
-8	172.30.0.40	8000	172.30.0.1	49876		
-16	172.30.0.10	42570	172.30.0.66	8080	POST	/
-18	172.30.0.66	8080	172.30.0.10	42570	
-
 ls -lh hw4-malicious.pcap
 -rw-r--r-- 1 tcpdump tcpdump 3.0K Nov 20 14:32 hw4-malicious.pcap
 ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ tshark -r hw4-malicious.pcap -Y http -T fields -e frame.number -e ip.src -e tcp.srcport -e ip.dst -e tcp.dstport -e http.request.method -e http.request.uri
 4	172.30.0.10	49876	172.30.0.40	8000	GET	/adversarial.html
-8	172.30.0.40	8000	172.30.0.1	49876		
+8	172.30.0.40	8000	172.30.0.10	49876		
 16	172.30.0.10	42570	172.30.0.66	8080	POST	/
 18	172.30.0.66	8080	172.30.0.10	42570		
 ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ tshark -r hw4-malicious.pcap -Y 'http.request.method == "POST"' -T fields -e tcp.stream
@@ -132,6 +126,13 @@ Date: Fri, 20 Nov 2026 19:32:09 GMT
 
 
 ===================================================================
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ sha256sum fake_secrets.txt
+76c31395d3242ccfc90e48577ef877f799f7bcdf89f79a2600d9d678339e034a  fake_secrets.txt
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ printf '%s' 'CSCE465-FAKE-TOKEN-2f67e97a501147ce' | sha256sum
+76c31395d3242ccfc90e48577ef877f799f7bcdf89f79a2600d9d678339e034a  -
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ 
+
+
 
 tshark -r hw4-malicious.pcap -Y 'tcp.stream == 1' -T fields -e frame.number -e frame.time
 13	Nov 20, 2026 14:32:09.417365000 EST
@@ -150,6 +151,28 @@ ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ tshark -r hw4-clean.pcap -Y 'h
 ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ tshark -r hw4-clean.pcap -Y http -T fields -e ip.src -e ip.dst -e http.request.method -e http.request.uri
 172.30.0.10	172.30.0.40	GET	/benign.html
 172.30.0.40	172.30.0.10		
+
+
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ sudo nmap -sS -p- 172.30.0.10
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-11-22 17:32 EST
+Nmap scan report for 172.30.0.10
+Host is up (0.0000040s latency).
+All 65535 scanned ports on 172.30.0.10 are in ignored states.
+Not shown: 65535 closed tcp ports (reset)
+MAC Address: 62:8D:7A:30:5C:DA (Unknown)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.96 seconds
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ docker compose exec -d agent-node /app/mock_skill.sh
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ sudo nmap -sS -p- 172.30.0.10
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-11-22 17:32 EST
+Nmap scan report for 172.30.0.10
+Host is up (0.0000030s latency).
+Not shown: 65534 closed tcp ports (reset)
+PORT     STATE SERVICE
+9009/tcp open  pichat
+MAC Address: 62:8D:7A:30:5C:DA (Unknown)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.74 seconds
 
 
 
