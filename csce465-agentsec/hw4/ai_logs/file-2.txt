@@ -1,0 +1,74 @@
+okay, I need some help running "docker network inspect" to confirm the ip addresses of the containers in my running docker
+Absolutely. You can use docker network inspect to see the IP addresses assigned to each container on your Docker Compose network.
+
+Let's go step by step.
+
+1. Find your Docker network
+First, navigate to the directory containing your docker-compose.yml and run:
+
+sudo docker network ls
+
+You should see something similar to:
+
+NETWORK ID     NAME                    DRIVER    SCOPE
+abc123456789   csce465-agentsec_default bridge    local
+Docker Compose typically creates a network named:
+
+<project-directory>_default
+Your actual network name may differ depending on your Compose configuration.
+
+2. Inspect the network
+Run:
+
+sudo docker network inspect NETWORK_NAME
+
+For example:
+
+sudo docker network inspect csce465-agentsec_default
+
+This returns JSON containing information about the network, including its subnet, gateway, and connected containers.
+
+Look for the Containers section:
+
+"Containers": {
+    "container_id_1": {
+        "Name": "agent-node",
+        "IPv4Address": "172.30.0.10/16"
+    },
+    "container_id_2": {
+        "Name": "web-lab",
+        "IPv4Address": "172.30.0.20/16"
+    },
+    "container_id_3": {
+        "Name": "mock-c2",
+        "IPv4Address": "172.30.0.30/16"
+    }
+}
+
+Those IP addresses are examples, not necessarily your actual addresses.
+
+3. Get just the container names and IP addresses
+If you don't want to sift through the entire JSON output, use:
+
+sudo docker network inspect NETWORK_NAME \
+  --format='{{range .Containers}}{{.Name}}: {{.IPv4Address}}{{println}}{{end}}'
+
+This produces something like:
+
+agent-node: 172.30.0.10/16
+web-lab: 172.30.0.20/16
+mock-c2: 172.30.0.30/16
+4. Alternative: Inspect individual containers
+You can also inspect each container individually:
+
+sudo docker inspect agent-node
+sudo docker inspect web-lab
+sudo docker inspect mock-c2
+
+Or retrieve just the IP address:
+
+sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' agent-node
+
+My recommendation: Start with steps 1–3.
+
+Run sudo docker network ls, then inspect your Compose network. Send me the output of the formatted command in Step 3, and we can verify that all three containers are connected and have the expected IP addresses.
