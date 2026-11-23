@@ -186,6 +186,14 @@ TASK 4:
 both captures and a table with your TP/FP/FN/TN result for each rule and PCAP. (3) In your own words,
 explain what limitation you may have.
 
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ sudo jq -r 'select(.event_type=="alert") | [.timestamp,.src_ip,.src_port,.dest_ip,.dest_port,.alert.signature_id,.alert.signature] | @tsv' suricata-malicious/eve.json
+2026-11-20T14:32:09.417365-0500	172.30.0.10	42570	172.30.0.66	8080	1000003	HW4 ALERT - Agent connecting to mock C2
+2026-11-20T14:32:09.420907-0500	172.30.0.10	42570	172.30.0.66	8080	1000001	HW4 ALERT - Fake secret exfiltration detected
+2026-11-20T14:31:30.878872-0500	172.30.0.40	8000	172.30.0.1	49876	1000002	HW4 ALERT - Adversarial webpage marker detected
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$ sudo jq -r 'select(.event_type=="alert") | [.timestamp,.src_ip,.src_port,.dest_ip,.dest_port,.alert.signature_id,.alert.signature] | @tsv' suricata-clean/eve.json
+ubuntu@ubuntu2204:~/465-hw4/csce465-agentsec/hw4$
+
+
 TASK 5:
 
 Include the incident summary as its own section of your report, at most one page long. Use the
