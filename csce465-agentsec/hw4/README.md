@@ -35,6 +35,20 @@ printf 'CSCE465-FAKE-TOKEN-%s' "$(openssl rand -hex 8)" > fake_secrets.txt;
 sudo docker compose up -d --build
 sudo docker compose ps
 
+TASK 2:
+
+ls -lh hw4-malicious.pcap
+-rw-r--r-- 1 tcpdump tcpdump 3.0K Nov 20 14:32 hw4-malicious.pcap
+
+tshark -r hw4-malicious.pcap -Y http -T fields -e frame.number -e ip.src -e tcp.srcport -e ip.dst -e tcp.dstport -e http.request.method -e http.request.uri
+
+tshark -r hw4-malicious.pcap -Y 'http.request.method == "POST"' -T fields -e tcp.stream
+
+tshark -r hw4-clean.pcap -Y 'http.request.method == "POST"'
+
+tshark -r hw4-clean.pcap -Y http -T fields -e ip.src -e ip.dst -e http.request.method -e http.request.uri
+
+
 TASK 3:
 
 fetch benign webpage: sudo docker compose exec agent-node curl http://172.30.0.40:8000/benign.html
