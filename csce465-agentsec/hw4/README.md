@@ -42,3 +42,11 @@ exfiltrate: sudo docker compose exec agent-node ./mock_skill.sh exfiltrate-cours
 unapproved container port: sudo docker compose exec agent-node curl --max-time 5 http://172.30.0.40:8080/
 existing response traffic: nc -v 172.30.0.10 9009
 unrelated: sudo docker compose exec web-lab curl -X POST http://172.30.0.66:8080/ 
+
+TASK 4:
+mkdir -p suricata-malicious suricata-clean
+sudo suricata -k none -r hw4-malicious.pcap -S local.rules -l suricata-malicious
+sudo suricata -k none -r hw4-clean.pcap -S local.rules -l suricata-clean
+
+sudo cat suricata-malicious/fast.log
+sudo cat suricata-clean/fast.log
