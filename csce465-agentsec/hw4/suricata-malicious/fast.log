@@ -1,0 +1,2 @@
+11/20/2026-19:32:09.417365  [**] [1:1000003:1] HW4 ALERT - Agent connecting to mock C2 [**] [Classification: (null)] [Priority: 3] {TCP} 172.30.0.10:42570 -> 172.30.0.66:8080
+11/20/2026-19:32:09.420907  [**] [1:1000001:1] HW4 ALERT - Fake secret exfiltration detected [**] [Classification: (null)] [Priority: 3] {TCP} 172.30.0.10:42570 -> 172.30.0.66:8080

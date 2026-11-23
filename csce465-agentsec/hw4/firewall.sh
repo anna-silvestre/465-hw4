@@ -19,6 +19,6 @@ iptables -A HW4-POLICY -s 172.30.0.10 -d 172.30.0.66 -p tcp --dport 8080 -m stat
 iptables -A HW4-POLICY -s 172.30.0.10 -d 172.30.0.66 -p tcp --dport 8080 -m state --state NEW -j DROP
 
 # drop other new forwarded connections from agent-node
-iptables -A HW4-POLICY -s 172.30.0.10 -j DROP
+iptables -A HW4-POLICY -d 172.30.0.10 -j DROP
 
 # leave unrelated Docker traffic unchanged

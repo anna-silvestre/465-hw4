@@ -1,0 +1,49 @@
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Notice: suricata: This is Suricata version 8.0.8 RELEASE running in USER mode
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Info: cpu: CPUs/cores online: 8
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Info: suricata: Setting engine mode to IDS mode by default
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Info: exception-policy: master exception-policy set to: auto
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Info: suricata: Preparing unexpected signal handling
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Info: logopenfile: fast output device (regular) initialized: fast.log
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Info: logopenfile: eve-log output device (regular) initialized: eve.json
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Info: logopenfile: stats output device (regular) initialized: stats.log
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Error: detect-parse: Signature missing required value "sid".
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Error: detect: error parsing signature "alert http 172.30.0.10 any -> any any (" from file local.rules at line 3
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Error: detect-parse: no rule options.
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Error: detect: error parsing signature ")" from file local.rules at line 10
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Error: detect-parse: Signature missing required value "sid".
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Error: detect: error parsing signature "alert http 172.30.0.40 any -> 172.30.0.10 any (" from file local.rules at line 13
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Error: detect-parse: no rule options.
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Error: detect: error parsing signature ")" from file local.rules at line 20
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Error: detect-parse: Signature missing required value "sid".
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Error: detect: error parsing signature "alert tcp 172.30.0.10 any -> 172.30.0.66 8080 (" from file local.rules at line 23
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Error: detect-parse: no rule options.
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Error: detect: error parsing signature ")" from file local.rules at line 29
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Warning: detect: 1 rule files specified, but no rules were loaded!
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Info: threshold-config: Threshold config parsed: 0 rule(s) found
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Info: detect: 0 signatures processed. 0 are IP-only rules, 0 are inspecting packet payload, 0 inspect application layer, 0 are decoder event only
+[112066 - RX#01] 2026-11-23 03:27:39 Info: pcap: Starting file run for hw4-clean.pcap
+[112066 - RX#01] 2026-11-23 03:27:39 Info: pcap: pcap file hw4-clean.pcap end of file reached (pcap err code 0)
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Notice: threads: Threads created -> RX: 1 W: 8 FM: 1 FR: 1   Engine started.
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Notice: suricata: Signal Received.  Stopping engine.
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Info: suricata: time elapsed 0.124s
+[112066 - RX#01] 2026-11-23 03:27:39 Notice: pcap: read 1 file, 16 packets, 1408 bytes
+[112065 - Suricata-Main] 2026-11-23 03:27:39 Info: counters: Alerts: 0
+[112270 - Suricata-Main] 2026-11-23 03:30:21 Notice: suricata: This is Suricata version 8.0.8 RELEASE running in USER mode
+[112270 - Suricata-Main] 2026-11-23 03:30:21 Info: cpu: CPUs/cores online: 8
+[112270 - Suricata-Main] 2026-11-23 03:30:21 Info: suricata: Setting engine mode to IDS mode by default
+[112270 - Suricata-Main] 2026-11-23 03:30:21 Info: exception-policy: master exception-policy set to: auto
+[112270 - Suricata-Main] 2026-11-23 03:30:21 Info: suricata: Preparing unexpected signal handling
+[112270 - Suricata-Main] 2026-11-23 03:30:21 Info: logopenfile: fast output device (regular) initialized: fast.log
+[112270 - Suricata-Main] 2026-11-23 03:30:21 Info: logopenfile: eve-log output device (regular) initialized: eve.json
+[112270 - Suricata-Main] 2026-11-23 03:30:21 Info: logopenfile: stats output device (regular) initialized: stats.log
+[112270 - Suricata-Main] 2026-11-23 03:30:21 Info: detect: 1 rule files processed. 3 rules successfully loaded, 0 rules failed, 0 rules skipped
+[112270 - Suricata-Main] 2026-11-23 03:30:21 Info: threshold-config: Threshold config parsed: 0 rule(s) found
+[112270 - Suricata-Main] 2026-11-23 03:30:21 Info: detect: 3 signatures processed. 0 are IP-only rules, 0 are inspecting packet payload, 2 inspect application layer, 0 are decoder event only
+[112270 - Suricata-Main] 2026-11-23 03:30:21 Warning: detect: rule 1000003: SYN-only to port(s) 8080:8080 w/o direction specified, disabling for toclient direction
+[112271 - RX#01] 2026-11-23 03:30:21 Info: pcap: Starting file run for hw4-clean.pcap
+[112270 - Suricata-Main] 2026-11-23 03:30:21 Notice: threads: Threads created -> RX: 1 W: 8 FM: 1 FR: 1   Engine started.
+[112271 - RX#01] 2026-11-23 03:30:21 Info: pcap: pcap file hw4-clean.pcap end of file reached (pcap err code 0)
+[112270 - Suricata-Main] 2026-11-23 03:30:21 Notice: suricata: Signal Received.  Stopping engine.
+[112270 - Suricata-Main] 2026-11-23 03:30:21 Info: suricata: time elapsed 0.111s
+[112271 - RX#01] 2026-11-23 03:30:21 Notice: pcap: read 1 file, 16 packets, 1408 bytes
+[112270 - Suricata-Main] 2026-11-23 03:30:21 Info: counters: Alerts: 0
